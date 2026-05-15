@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxograma AVC — FHO / Araras-SP</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#F1F8F1;color:#1C2B1C;min-height:100vh}
+
+/* ── HEADER ── */
+.hdr{background:#1B5E20;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.hdr-title{font-size:16px;font-weight:700;letter-spacing:.3px}
+.hdr-sub{font-size:10px;color:#A5D6A7;margin-top:2px}
+.badge{background:#2E7D32;border-radius:12px;padding:4px 12px;font-size:11px;color:#F9A825;font-weight:700}
+
+/* ── DETAIL PANEL ── */
+.panel{margin:10px 16px;background:#fff;border:1px solid #C8E6C9;border-left:4px solid #1B5E20;border-radius:8px;padding:12px 16px;min-height:90px;display:flex;align-items:center;justify-content:center;transition:all .25s}
+.panel.active{display:block}
+.panel-hint{font-size:13px;color:#90A4AE;text-align:center}
+.panel-title{font-size:14px;font-weight:700;color:#1B5E20;margin-bottom:6px}
+.panel-items{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px}
+.panel-item{font-size:11.5px;color:#37474F;padding:2px 0 2px 14px;position:relative;line-height:1.5}
+.panel-item::before{content:'·';position:absolute;left:4px;color:#81C784}
+.panel-alert{margin-top:8px;padding:6px 10px;background:#FFF8E1;border-left:2px solid #F9A825;font-size:11px;color:#E65100;border-radius:0 4px 4px 0}
+.panel-red{background:#FFEBEE;border-left-color:#B71C1C}
+.panel-alert.red{background:#FFEBEE;border-left-color:#B71C1C;color:#B71C1C}
+
+/* ── SCROLL CONTAINER ── */
+.scroll{overflow-x:auto;padding:8px 16px 16px}
+
+/* ── FLOWCHART SVG ── */
+svg{display:block}
+.nd{cursor:pointer;transition:opacity .15s}
+.nd:hover>rect,.nd:hover>polygon,.nd:hover>ellipse{opacity:.82;filter:brightness(.96)}
+
+/* ── LEGEND ── */
+.legend{display:flex;gap:10px;flex-wrap:wrap;padding:8px 16px 14px;font-size:11px;color:#546E7A;align-items:center}
+.ls{width:12px;height:12px;border-radius:2px;display:inline-block;vertical-align:middle;margin-right:4px}
+
+/* ── TIMES BAR ── */
+.times{display:flex;gap:8px;padding:6px 16px 10px;flex-wrap:wrap}
+.time-chip{background:#1B5E20;color:#fff;border-radius:12px;padding:4px 12px;font-size:11px;font-weight:700}
+.time-chip span{color:#A5D6A7;font-weight:400;margin-left:4px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .panel-items{grid-template-columns:1fr}
+  .hdr{flex-direction:column;align-items:flex-start;gap:4px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <div class="hdr-title">🧠 Fluxograma de Atendimento ao AVC</div>
+    <div class="hdr-sub">Baseado na Diretriz AHA/ASA 2026 · Clique nos blocos para detalhes clínicos</div>
+  </div>
+  <div class="badge">AHA/ASA 2026</div>
+</div>
+
+<!-- TIME CHIPS -->
+<div class="times">
+  <div class="time-chip">Porta-Agulha<span>≤ 60 min</span></div>
+  <div class="time-chip">TC de Crânio<span>≤ 25 min</span></div>
+  <div class="time-chip">Trombectomia<span>≤ 90 min</span></div>
+  <div class="time-chip">Avaliação Neuro<span>≤ 10 min</span></div>
+  <div class="time-chip">Janela Trombólise<span>≤ 4,5h</span></div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="panel" id="panel">
+  <div class="panel-hint">Clique em qualquer bloco do fluxograma para ver detalhes clínicos</div>
+</div>
+
+<!-- FLOWCHART -->
+<div class="scroll">
+<svg id="flx" viewBox="0 0 965 960" width="965" style="max-width:100%">
+<defs>
+  <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ══ TRUNK ARROWS ══ -->
+<line x1="400" y1="74" x2="400" y2="90" stroke="#546E7A" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="400" y1="128" x2="400" y2="144" stroke="#546E7A" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="400" y1="198" x2="400" y2="214" stroke="#546E7A" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="400" y1="266" x2="400" y2="282" stroke="#546E7A" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="400" y1="334" x2="400" y2="350" stroke="#546E7A" stroke-width="1.2" marker-end="url(#ar)"/>
+
+<!-- ══ TRUNK NODES ══ -->
+<!-- RECONHECIMENTO -->
+<g class="nd" onclick="show('reco')">
+  <rect x="300" y="20" width="200" height="54" rx="6" fill="#E0F2F1" stroke="#00695C" stroke-width="1.2"/>
+  <text x="400" y="43" text-anchor="middle" font-size="13" font-weight="700" fill="#004D40">Reconhecimento</text>
+  <text x="400" y="62" text-anchor="middle" font-size="11" fill="#00695C">FAST · Escala de Cincinnati</text>
+</g>
+
+<!-- SAMU -->
+<g class="nd" onclick="show('samu')">
+  <rect x="340" y="90" width="120" height="38" rx="6" fill="#FCE4EC" stroke="#C62828" stroke-width="1.2"/>
+  <text x="400" y="114" text-anchor="middle" font-size="13" font-weight="700" fill="#B71C1C">SAMU 192</text>
+</g>
+
+<!-- CHEGADA -->
+<g class="nd" onclick="show('chegada')">
+  <rect x="300" y="144" width="200" height="54" rx="6" fill="#ECEFF1" stroke="#455A64" stroke-width="1.2"/>
+  <text x="400" y="167" text-anchor="middle" font-size="13" font-weight="700" fill="#263238">Chegada — T = 0</text>
+  <text x="400" y="186" text-anchor="middle" font-size="11" fill="#546E7A">PA · Glasgow · Glicemia · SpO₂</text>
+</g>
+
+<!-- AVALIAÇÃO -->
+<g class="nd" onclick="show('aval')">
+  <rect x="300" y="214" width="200" height="52" rx="6" fill="#ECEFF1" stroke="#455A64" stroke-width="1.2"/>
+  <text x="400" y="236" text-anchor="middle" font-size="13" font-weight="700" fill="#263238">Avaliação Neurológica</text>
+  <text x="400" y="254" text-anchor="middle" font-size="11" fill="#546E7A">Glasgow · NIHSS · ≤ 10 min</text>
+</g>
+
+<!-- TC -->
+<g class="nd" onclick="show('tc')">
+  <rect x="300" y="282" width="200" height="52" rx="6" fill="#EDE7F6" stroke="#4527A0" stroke-width="1.2"/>
+  <text x="400" y="304" text-anchor="middle" font-size="13" font-weight="700" fill="#311B92">TC Crânio S/ Contraste</text>
+  <text x="400" y="323" text-anchor="middle" font-size="11" fill="#4527A0">Excluir hemorragia · ≤ 25 min</text>
+</g>
+
+<!-- DECISION DIAMOND -->
+<g class="nd" onclick="show('diag')">
+  <polygon points="400,350 500,378 400,406 300,378" fill="#FFF8E1" stroke="#E65100" stroke-width="1.2"/>
+  <text x="400" y="374" text-anchor="middle" font-size="12" font-weight="700" fill="#BF360C">Tipo de AVC?</text>
+  <text x="400" y="393" text-anchor="middle" font-size="10" fill="#E65100">TC confirmatória</text>
+</g>
+
+<!-- Branch labels + lateral arrows -->
+<text x="276" y="370" text-anchor="middle" font-size="10" fill="#00695C" font-weight="700">Isquêmico ~85%</text>
+<line x1="300" y1="378" x2="222" y2="378" stroke="#00695C" stroke-width="1.4" marker-end="url(#ar)"/>
+<text x="524" y="370" text-anchor="middle" font-size="10" fill="#B71C1C" font-weight="700">Hemorrágico ~15%</text>
+<line x1="500" y1="378" x2="578" y2="378" stroke="#B71C1C" stroke-width="1.4" marker-end="url(#ar)"/>
+
+<!-- ══════════════════════════════════════════
+     COLUNA ISQ (cx = 155)
+══════════════════════════════════════════ -->
+<!-- ISQ HEADER -->
+<g class="nd" onclick="show('isqh')">
+  <rect x="60" y="356" width="162" height="44" rx="6" fill="#00695C" stroke="#004D40" stroke-width="1"/>
+  <text x="141" y="382" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">AVC Isquêmico</text>
+</g>
+
+<!-- ISQ arrows -->
+<line x1="141" y1="400" x2="141" y2="416" stroke="#00695C" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="141" y1="470" x2="141" y2="486" stroke="#00695C" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="141" y1="540" x2="141" y2="558" stroke="#00695C" stroke-width="1.2" marker-end="url(#ar)"/>
+<text x="152" y="553" font-size="10" fill="#00695C" font-weight="700">Sim</text>
+<line x1="141" y1="610" x2="141" y2="626" stroke="#00695C" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="141" y1="678" x2="141" y2="694" stroke="#00695C" stroke-width="1.2" marker-end="url(#ar)"/>
+<text x="152" y="689" font-size="10" fill="#00695C" font-weight="700">Sim</text>
+<line x1="141" y1="746" x2="141" y2="762" stroke="#546E7A" stroke-width="1.2" marker-end="url(#ar)"/>
+
+<!-- MEDIDAS GERAIS -->
+<g class="nd" onclick="show('medidas')">
+  <rect x="60" y="416" width="162" height="54" rx="6" fill="#ECEFF1" stroke="#546E7A" stroke-width="1"/>
+  <text x="141" y="438" text-anchor="middle" font-size="12" font-weight="700" fill="#263238">Medidas Gerais</text>
+  <text x="141" y="458" text-anchor="middle" font-size="10" fill="#546E7A">O₂ · PA · Glicemia · T°</text>
+</g>
+
+<!-- D1 ELEGÍVEL -->
+<g class="nd" onclick="show('eleg')">
+  <polygon points="141,486 214,514 141,542 68,514" fill="#FFF8E1" stroke="#E65100" stroke-width="1.2"/>
+  <text x="141" y="510" text-anchor="middle" font-size="11" font-weight="700" fill="#BF360C">Elegível?</text>
+  <text x="141" y="527" text-anchor="middle" font-size="9.5" fill="#E65100">Trombólise</text>
+</g>
+<!-- Não stub D1 -->
+<line x1="68" y1="514" x2="48" y2="514" stroke="#9E9E9E" stroke-width="0.8" stroke-dasharray="3 2"/>
+<text x="45" y="510" text-anchor="end" font-size="9" fill="#9E9E9E">Não→antiplaq.</text>
+
+<!-- TROMBÓLISE -->
+<g class="nd" onclick="show('trombo')">
+  <rect x="60" y="558" width="162" height="52" rx="6" fill="#E0F2F1" stroke="#00695C" stroke-width="1.2"/>
+  <text x="141" y="580" text-anchor="middle" font-size="12" font-weight="700" fill="#004D40">Trombólise IV</text>
+  <text x="141" y="599" text-anchor="middle" font-size="10" fill="#00695C">TNK · Alteplase · ≤ 60 min</text>
+</g>
+
+<!-- D2 GRANDE VASO -->
+<g class="nd" onclick="show('vaso')">
+  <polygon points="141,626 214,654 141,682 68,654" fill="#FFF8E1" stroke="#E65100" stroke-width="1.2"/>
+  <text x="141" y="650" text-anchor="middle" font-size="11" font-weight="700" fill="#BF360C">Grande vaso?</text>
+  <text x="141" y="667" text-anchor="middle" font-size="9.5" fill="#E65100">ATC confirma</text>
+</g>
+<!-- Não stub D2 -->
+<line x1="68" y1="654" x2="48" y2="654" stroke="#9E9E9E" stroke-width="0.8" stroke-dasharray="3 2"/>
+<text x="45" y="650" text-anchor="end" font-size="9" fill="#9E9E9E">Não→monitor.</text>
+
+<!-- TROMBECTOMIA -->
+<g class="nd" onclick="show('trombect')">
+  <rect x="60" y="694" width="162" height="52" rx="6" fill="#EDE7F6" stroke="#4527A0" stroke-width="1.2"/>
+  <text x="141" y="716" text-anchor="middle" font-size="12" font-weight="700" fill="#311B92">Trombectomia</text>
+  <text x="141" y="735" text-anchor="middle" font-size="10" fill="#4527A0">Stent-retriever · ≤ 90 min</text>
+</g>
+
+<!-- PÓS-REPERFUSÃO -->
+<g class="nd" onclick="show('posrep')">
+  <rect x="60" y="762" width="162" height="52" rx="6" fill="#ECEFF1" stroke="#546E7A" stroke-width="1"/>
+  <text x="141" y="784" text-anchor="middle" font-size="12" font-weight="700" fill="#263238">Pós-Reperfusão</text>
+  <text x="141" y="803" text-anchor="middle" font-size="10" fill="#546E7A">PA&lt;180/105 · Sem antiplaq. 24h</text>
+</g>
+
+<!-- ══════════════════════════════════════════
+     COLUNA HEM (cx = 659)
+══════════════════════════════════════════ -->
+<!-- HEM HEADER -->
+<g class="nd" onclick="show('hemh')">
+  <rect x="578" y="356" width="162" height="44" rx="6" fill="#B71C1C" stroke="#7F0000" stroke-width="1"/>
+  <text x="659" y="382" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">AVC Hemorrágico</text>
+</g>
+
+<!-- HEM arrows -->
+<line x1="659" y1="400" x2="659" y2="416" stroke="#B71C1C" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="659" y1="470" x2="659" y2="486" stroke="#B71C1C" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="659" y1="540" x2="659" y2="556" stroke="#B71C1C" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="659" y1="608" x2="659" y2="624" stroke="#B71C1C" stroke-width="1.2" marker-end="url(#ar)"/>
+<text x="647" y="620" text-anchor="end" font-size="10" fill="#B71C1C" font-weight="700">HIP</text>
+<line x1="659" y1="676" x2="659" y2="692" stroke="#B71C1C" stroke-width="1.2" marker-end="url(#ar)"/>
+<line x1="659" y1="744" x2="659" y2="760" stroke="#B71C1C" stroke-width="1.2" marker-end="url(#ar)"/>
+<text x="647" y="756" text-anchor="end" font-size="10" fill="#B71C1C" font-weight="700">Sim</text>
+<line x1="659" y1="812" x2="659" y2="828" stroke="#546E7A" stroke-width="1.2" marker-end="url(#ar)"/>
+
+<!-- DETERMINAR CAUSA -->
+<g class="nd" onclick="show('causa')">
+  <rect x="578" y="416" width="162" height="54" rx="6" fill="#ECEFF1" stroke="#546E7A" stroke-width="1"/>
+  <text x="659" y="438" text-anchor="middle" font-size="12" font-weight="700" fill="#263238">Determinar Causa</text>
+  <text x="659" y="458" text-anchor="middle" font-size="10" fill="#546E7A">ATC · Exames laboratoriais</text>
+</g>
+
+<!-- SUPORTE HEM -->
+<g class="nd" onclick="show('suporte')">
+  <rect x="578" y="486" width="162" height="54" rx="6" fill="#FFEBEE" stroke="#B71C1C" stroke-width="1.2"/>
+  <text x="659" y="508" text-anchor="middle" font-size="12" font-weight="700" fill="#7F0000">Tratamento Suporte</text>
+  <text x="659" y="527" text-anchor="middle" font-size="10" fill="#B71C1C">PA · Anticoag. · PIC · O₂</text>
+</g>
+
+<!-- D HIP/HSA -->
+<g class="nd" onclick="show('tipoh')">
+  <polygon points="659,556 737,584 659,612 581,584" fill="#FFF8E1" stroke="#E65100" stroke-width="1.2"/>
+  <text x="659" y="580" text-anchor="middle" font-size="11" font-weight="700" fill="#BF360C">HIP ou HSA?</text>
+  <text x="659" y="597" text-anchor="middle" font-size="9.5" fill="#E65100">Tipo de hemorragia</text>
+</g>
+<!-- HSA stub -->
+<line x1="737" y1="584" x2="757" y2="584" stroke="#9E9E9E" stroke-width="0.8" stroke-dasharray="3 2"/>
+<text x="760" y="580" font-size="9" fill="#9E9E9E">HSA→coils</text>
+
+<!-- HIP CONTROLE -->
+<g class="nd" onclick="show('hip')">
+  <rect x="578" y="624" width="162" height="52" rx="6" fill="#FFEBEE" stroke="#B71C1C" stroke-width="1.2"/>
+  <text x="659" y="646" text-anchor="middle" font-size="12" font-weight="700" fill="#7F0000">HIP — Controle</text>
+  <text x="659" y="665" text-anchor="middle" font-size="10" fill="#B71C1C">PAS&lt;140 · Reverter anticoag.</text>
+</g>
+
+<!-- D CIRURGIA -->
+<g class="nd" onclick="show('cir')">
+  <polygon points="659,692 737,720 659,748 581,720" fill="#FFF8E1" stroke="#E65100" stroke-width="1.2"/>
+  <text x="659" y="716" text-anchor="middle" font-size="11" font-weight="700" fill="#BF360C">Cirurgia?</text>
+  <text x="659" y="733" text-anchor="middle" font-size="9.5" fill="#E65100">Indicação clínica</text>
+</g>
+<!-- Não stub -->
+<line x1="737" y1="720" x2="757" y2="720" stroke="#9E9E9E" stroke-width="0.8" stroke-dasharray="3 2"/>
+<text x="760" y="716" font-size="9" fill="#9E9E9E">Não→UTI</text>
+
+<!-- CRANIOTOMIA -->
+<g class="nd" onclick="show('cranio')">
+  <rect x="578" y="760" width="162" height="52" rx="6" fill="#EDE7F6" stroke="#4527A0" stroke-width="1.2"/>
+  <text x="659" y="782" text-anchor="middle" font-size="12" font-weight="700" fill="#311B92">Craniotomia</text>
+  <text x="659" y="800" text-anchor="middle" font-size="10" fill="#4527A0">Hematoma&gt;30mL · Cerebelar&gt;3cm</text>
+</g>
+
+<!-- UTI -->
+<g class="nd" onclick="show('uti')">
+  <rect x="578" y="828" width="162" height="52" rx="6" fill="#ECEFF1" stroke="#546E7A" stroke-width="1"/>
+  <text x="659" y="850" text-anchor="middle" font-size="12" font-weight="700" fill="#263238">UTI Neurológica</text>
+  <text x="659" y="869" text-anchor="middle" font-size="10" fill="#546E7A">Glasgow · Pupilas · PAM 70–100</text>
+</g>
+
+<!-- ══ CONVERGÊNCIA ══ -->
+<line x1="141" y1="814" x2="141" y2="900" stroke="#A5D6A7" stroke-width="1" stroke-dasharray="5 3"/>
+<line x1="659" y1="880" x2="659" y2="900" stroke="#A5D6A7" stroke-width="1" stroke-dasharray="5 3"/>
+<line x1="141" y1="900" x2="400" y2="900" stroke="#A5D6A7" stroke-width="1" stroke-dasharray="5 3"/>
+<line x1="659" y1="900" x2="400" y2="900" stroke="#A5D6A7" stroke-width="1" stroke-dasharray="5 3"/>
+<line x1="400" y1="900" x2="400" y2="912" stroke="#1B5E20" stroke-width="1.4" marker-end="url(#ar)"/>
+
+<!-- REABILITAÇÃO -->
+<g class="nd" onclick="show('reab')">
+  <rect x="298" y="912" width="204" height="32" rx="6" fill="#1B5E20" stroke="#0A3D11" stroke-width="1"/>
+  <text x="400" y="932" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Reabilitação e Prevenção Secundária</text>
+</g>
+
+<!-- ══ CAIXA: SINAIS DE PIC ELEVADA ══ -->
+<line x1="740" y1="650" x2="756" y2="650" stroke="#E65100" stroke-width="0.9" stroke-dasharray="4 2"/>
+<g class="nd" onclick="show('pic')">
+  <rect x="756" y="620" width="195" height="60" rx="6" fill="#FFF8E1" stroke="#E65100" stroke-width="1.4"/>
+  <rect x="756" y="620" width="8" height="60" rx="3" fill="#E65100" stroke="none"/>
+  <text x="858" y="637" text-anchor="middle" font-size="11" font-weight="700" fill="#BF360C">⚠ Sinais de PIC Elevada</text>
+  <text x="858" y="652" text-anchor="middle" font-size="9.5" fill="#E65100">Tríade de Cushing · Pupilas · Vômito em jato</text>
+  <text x="858" y="667" text-anchor="middle" font-size="9" fill="#9E6000">Clique para detalhes completos</text>
+</g>
+
+<!-- ══ CAIXA: CUIDADOS PÓS-CRANIOTOMIA ══ -->
+<line x1="740" y1="786" x2="756" y2="786" stroke="#4527A0" stroke-width="0.9" stroke-dasharray="4 2"/>
+<g class="nd" onclick="show('cuidpos')">
+  <rect x="756" y="760" width="195" height="60" rx="6" fill="#EDE7F6" stroke="#4527A0" stroke-width="1.4"/>
+  <rect x="756" y="760" width="8" height="60" rx="3" fill="#4527A0" stroke="none"/>
+  <text x="858" y="777" text-anchor="middle" font-size="11" font-weight="700" fill="#311B92">Cuidados Pós-Craniotomia</text>
+  <text x="858" y="793" text-anchor="middle" font-size="9.5" fill="#4527A0">Monitoramento neurológico · PA · Curativo</text>
+  <text x="858" y="808" text-anchor="middle" font-size="9" fill="#6249A8">Clique para detalhes completos</text>
+</g>
+
+
+<line x1="500" y1="214" x2="560" y2="214" stroke="#1B5E20" stroke-width="0.8" stroke-dasharray="4 3"/>
+<rect x="560" y="206" width="48" height="18" rx="9" fill="#1B5E20"/>
+<text x="584" y="219" text-anchor="middle" font-size="9" font-weight="700" fill="#F9A825">≤ 10min</text>
+
+<line x1="500" y1="282" x2="560" y2="282" stroke="#4527A0" stroke-width="0.8" stroke-dasharray="4 3"/>
+<rect x="560" y="274" width="48" height="18" rx="9" fill="#4527A0"/>
+<text x="584" y="287" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">≤ 25min</text>
+
+<line x1="222" y1="580" x2="252" y2="580" stroke="#00695C" stroke-width="0.8" stroke-dasharray="4 3"/>
+<rect x="252" y="572" width="48" height="18" rx="9" fill="#00695C"/>
+<text x="276" y="585" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">≤ 60min</text>
+
+<line x1="222" y1="716" x2="252" y2="716" stroke="#4527A0" stroke-width="0.8" stroke-dasharray="4 3"/>
+<rect x="252" y="708" width="48" height="18" rx="9" fill="#4527A0"/>
+<text x="276" y="721" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">≤ 90min</text>
+
+</svg>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <strong>Legenda:</strong>
+  <span><span class="ls" style="background:#00695C"></span>Isquêmico</span>
+  <span><span class="ls" style="background:#B71C1C"></span>Hemorrágico</span>
+  <span><span class="ls" style="background:#4527A0"></span>Intervenção</span>
+  <span><span class="ls" style="background:#546E7A"></span>Avaliação</span>
+  <span><span class="ls" style="background:#E65100"></span>Decisão / PIC</span>
+  <span><span class="ls" style="background:#1B5E20"></span>Reabilitação</span>
+  <span style="background:#FFF8E1;border:1px solid #E65100;border-radius:4px;padding:2px 8px;font-size:10px;color:#BF360C">⚠ Clique nas caixas laterais para detalhes de PIC e pós-craniotomia</span>
+  <span style="color:#B71C1C;font-size:10px;margin-left:8px">⚠ Prof. Me. Felipe Bueno da Silva · FHO / Araras-SP · Diretriz AHA/ASA 2026</span>
+</div>
+
+<script>
+const D={
+  reco:{c:'#00695C',t:'Reconhecimento dos Sintomas',items:['FAST: Face (assimetria) · Arms (fraqueza) · Speech (fala) · Time (tempo)','Cincinnati: assimetria facial, debilidade dos braços, fala anormal','Qualquer item alterado → acionar SAMU 192 imediatamente','Anotar horário EXATO do início dos sintomas (last-known-well)','Wake-up stroke: usar horário que o paciente foi visto bem pela última vez'],alert:'Cada minuto sem reperfusão = 1,9 milhão de neurônios perdidos — SAMU imediatamente'},
+  samu:{c:'#B71C1C',t:'Acionar SAMU 192',items:['Pré-notificar o hospital de destino antes da chegada','Aplicar Escala de Cincinnati no atendimento pré-hospitalar','Estabilizar: O₂, acesso venoso, glicemia capilar, sinais vitais','Não transportar em carro particular — risco de atraso crítico','Registrar horário exato do acionamento e início dos sintomas'],alert:null},
+  chegada:{c:'#455A64',t:'Chegada ao Hospital — T = 0',items:['Triagem imediata — NÃO aguardar fila comum','PA, FC, FR, SpO₂, temperatura e glicemia capilar (HGT)','Dois acessos venosos calibrosos — coleta de exames laboratoriais','Protocolo AVC ativado na admissão: médico, enfermeiro e TC mobilizados juntos','TC de crânio deve ser realizada em ≤ 25 min da chegada'],alert:'Meta porta-agulha: trombolítico em ≤ 60 min da chegada (AHA/ASA 2026)'},
+  aval:{c:'#455A64',t:'Avaliação Neurológica ≤ 10 min',items:['Escala de Coma de Glasgow: ≤ 8 = IOT imediata + ventilação mecânica','NIHSS: 0 sem déficit · 1–4 leve · 5–15 moderado · 16–20 grave · 21–42 muito grave','Déficit clinicamente INCAPACITANTE = indicação de reperfusão (independente do NIHSS)','Anamnese: início, medicamentos, alergias, uso de anticoagulantes','Verificar INR (varfarina), última dose de DOACs, plaquetas'],alert:'NIHSS baixo NÃO exclui trombólise — o que importa é o déficit ser incapacitante'},
+  tc:{c:'#4527A0',t:'TC de Crânio Sem Contraste ≤ 25 min',items:['Exclui hemorragia intracraniana imediatamente — decisão diagnóstica','ISQ: área hipodensa (escura) · HEM: área hiperdensa (branca)','ASPECTS ≥ 6: tecido viável suficiente para reperfusão','Suficiente para trombólise em janela < 4,5h (Diretriz AHA/ASA 2026)','Sinal da artéria densa: hiperdensidade em M1 = oclusão de grande vaso'],alert:'NÃO atrasar trombólise aguardando RM ou imagem avançada (Diretriz 2026)'},
+  diag:{c:'#E65100',t:'Decisão Diagnóstica — Tipo de AVC',items:['TC sem hemorragia → AVC isquêmico (~85%) → trombólise possível','TC com hiperdensidade → AVC hemorrágico (~15%) → trombolítico CONTRAINDICADO','Diagnóstico por imagem define completamente a conduta terapêutica','Jamais trombolisar sem TC confirmatória','Solicitar ATC se suspeita de oclusão de grande vaso (sinal da artéria densa)'],alert:null},
+  isqh:{c:'#00695C',t:'AVC Isquêmico — Princípios',items:['Bloqueio do fluxo sanguíneo por trombose ou embolia arterial','Representa ~85% de todos os AVCs','Penumbra isquêmica: neurônios disfuncionais mas ainda viáveis — alvo da reperfusão','Tipos: trombótico, embólico, lacunar, AIT','FA = principal causa do subtipo embólico (anticoagulação irregular)'],alert:null},
+  medidas:{c:'#455A64',t:'Medidas Gerais Imediatas',items:['O₂: manter SpO₂ > 94% · IOT se Glasgow ≤ 8','PA sem trombólise: tolerar até 220/120 mmHg (preservar perfusão da penumbra)','PA pré-trombólise: reduzir para ≤ 185/110 mmHg antes da infusão','Glicemia: meta 140–180 mg/dL (controle intensivo = sem benefício)','Temperatura: tratar febre ≥ 38°C com paracetamol + medidas físicas'],alert:'Pós-reperfusão: PA < 180/105 mmHg — alvos < 140 mmHg = Classe 3 Harm (AHA/ASA 2026)'},
+  eleg:{c:'#E65100',t:'Elegibilidade para Trombólise',items:['✔ TC sem hemorragia confirmada','✔ Início dos sintomas ≤ 4,5 horas (ou last-known-well)','✔ PA ≤ 185/110 mmHg antes da infusão','✔ Glicemia entre 50 e 400 mg/dL','✔ Déficit clinicamente INCAPACITANTE · ✔ Idade ≥ 18 anos','✗ Não elegível → antiagregação plaquetária + avaliação de trombectomia'],alert:'INR > 1,7 · DOACs nas últimas 48h · Hemorragia intracraniana prévia = contraindicação absoluta'},
+  trombo:{c:'#00695C',t:'Trombólise IV ≤ 60 min',items:['TNK (Tenecteplase) 0,25 mg/kg IV bolus único — Classe I AHA/ASA 2026','Alteplase (rt-PA) 0,9 mg/kg IV — 10% bolus + 90% em 60 min','Mecanismo: converte plasminogênio em plasmina → degrada fibrina do coágulo','Pós-trombólise: PA 15/15 min por 2h → 30/30 min por 6h → 60/60 min por 16h','Sem antiagregantes nas primeiras 24h · TC de controle em 24h'],alert:'ATENÇÃO pós-trombólise: verificar PA, observar sangramento, avaliar melhora neurológica'},
+  vaso:{c:'#E65100',t:'Oclusão de Grande Vaso?',items:['Angiotomografia (ATC) confirma oclusão de grande vaso','Grandes vasos: ACM M1, ACI, artéria basilar','NIHSS ≥ 6 + ASPECTS ≥ 6 = candidato à trombectomia','Estratégia bridging: trombólise IV + trombectomia simultaneamente','Janela: até 6h padrão · até 24h com seleção por perfusão (ASPECTS 3–5 = Classe I 2026)'],alert:null},
+  trombect:{c:'#4527A0',t:'Trombectomia Mecânica ≤ 90 min',items:['Cateter via artéria femoral → stent-retriever ou aspiração direta','Indicação: NIHSS ≥ 6 + ASPECTS ≥ 6 + oclusão de grande vaso','Janela padrão: até 6 horas do início dos sintomas','Janela ampliada: até 24h com seleção por neuroimagem de perfusão (NOVO 2026)','Basilar: até 24h (NIHSS ≥ 10, PC-ASPECTS ≥ 6) — NOVO AHA/ASA 2026'],alert:'Meta: punção femoral em ≤ 90 min da chegada · PA pós-recanalização < 180/105 mmHg'},
+  posrep:{c:'#455A64',t:'Pós-Reperfusão',items:['PA < 180/105 mmHg — redução intensiva (< 140) piora o prognóstico (Classe 3: Harm)','Monitorização neurológica: Glasgow e NIHSS a cada hora inicialmente','TC de controle em 24h: excluir transformação hemorrágica','Sem antiagregantes nas primeiras 24h pós-trombólise','Iniciar investigação etiológica: ECG, ecocardiograma, Holter, lipidograma'],alert:null},
+  hemh:{c:'#B71C1C',t:'AVC Hemorrágico — Princípios',items:['Ruptura espontânea de vaso com extravasamento de sangue intracraniano','HIP (85% dos hemorrágicos): sangramento no parênquima — principal causa: HAS','HSA (15% dos hemorrágicos): ruptura de aneurisma → pior cefaleia da vida','Trombolíticos são ABSOLUTAMENTE CONTRAINDICADOS no AVC hemorrágico','Mortalidade proporcionalmente mais elevada · Alta morbidade'],alert:'🚫 JAMAIS usar trombolítico sem TC confirmatória excluindo hemorragia',red:true},
+  causa:{c:'#455A64',t:'Determinar a Causa do Sangramento',items:['HAS descontrolada: causa mais comum de HIP (artérias perfurantes profundas)','Ruptura de aneurisma: causa mais comum de HSA (85% dos casos)','Outras: MAV, anticoagulantes, tumores, angiopatia amiloide cerebral, cocaína','ATC: identifica aneurismas, MAV e outras causas vasculares','Exames: coagulograma (INR, TP, TTPA), plaquetas, tipagem sanguínea'],alert:null},
+  suporte:{c:'#B71C1C',t:'Tratamento de Suporte',items:['HIP: PAS < 140 mmHg em ≤ 1 hora (nicardipina ou labetalol IV)','HSA: PAS 140–160 mmHg antes de excluir o aneurisma','Reverter anticoagulação: varfarina → vit.K + CCP · dabigatrana → idarucizumab','Controle da PIC: cabeceira 30–45° · manitol 0,25–1 g/kg IV · salina hipertônica 3%','Tríade de Cushing = HIC grave: Hipertensão + Bradicardia + Bradipneia'],alert:'🚫 Trombolíticos CONTRAINDICADOS · Confirmar TC antes de qualquer conduta de reperfusão',red:true},
+  tipoh:{c:'#E65100',t:'Tipo de Hemorragia?',items:['HIP: déficit focal + cefaleia + vômitos em jato + rebaixamento progressivo','HSA: pior cefaleia da vida + rigidez de nuca + fotofobia + náuseas','TC: HIP = hiperdensidade no parênquima · HSA = sangue nas cisternas subaracnóideas','HSA → tratar aneurisma: embolização com microcoils (endovascular) ou clipagem','PL indicada se TC negativa e forte suspeita de HSA (após 12h do início)'],alert:null},
+  hip:{c:'#B71C1C',t:'HIP — Controle Pressórico',items:['Meta: PAS < 140 mmHg em ≤ 1 hora — redução gradual (nicardipina ou labetalol IV)','Reverter anticoagulação: varfarina → vit.K + CCP · heparina → protamina · dabigatrana → idarucizumab · DOACs → andexanet alfa ou CCP 4F','Osmoterapia se PIC elevada: manitol 0,25–1 g/kg IV ou solução salina hipertônica 3%','DVE (derivação ventricular externa) se hidrocefalia aguda ou deterioração','Glicemia 140–180 mg/dL · Temperatura < 38°C (antipiréticos)'],alert:null},
+  cir:{c:'#E65100',t:'Cirurgia Indicada?',items:['Hematomas > 30 mL com deterioração neurológica progressiva','Hematomas cerebelares > 3 cm (risco de herniação do tronco cerebral)','HSA com aneurisma → embolização ou clipagem em 24–72h','Edema cerebral refratário → craniotomia descompressiva','Hematomas pequenos sem deterioração → tratamento conservador + UTI'],alert:null},
+  cranio:{c:'#4527A0',t:'Craniotomia Descompressiva',items:['Remoção temporária de fragmento ósseo do crânio para redução imediata da PIC','Permite expansão cerebral sem herniação fatal pelo forame magno','Indicações: hematomas > 30 mL com deterioração · cerebelares > 3 cm · edema cerebral maligno','Pós-op imediato: Glasgow a cada 1–2h · verificar pupilas (simetria, tamanho, fotorreatividade)','Anisocoria súbita = herniação uncal iminente → comunicar equipe imediatamente'],alert:'Tríade de Cushing: Hipertensão + Bradicardia + Bradipneia = HIC grave → veja caixa ⚠ Sinais de PIC'},
+  uti:{c:'#455A64',t:'UTI Neurológica — Monitorização Intensiva',items:['Glasgow e pupilas a cada 1–2h · PAM 70–100 mmHg · FR e temperatura contínuos','Posicionamento: cabeceira 30–45° + alinhamento cervical neutro (garantir drenagem venosa jugular)','Sítio cirúrgico: curativo íntegro, sinais de infecção (hiperemia, edema, secreção)','Halo claro ou em anel no curativo = suspeita de vazamento de líquor → notificar equipe imediatamente','Controle glicêmico 140–180 mg/dL · Tratar febre ≥ 38°C (antipiréticos + resfriamento físico)'],alert:'Alteração súbita do Glasgow, anisocoria ou Tríade de Cushing = comunicar equipe IMEDIATAMENTE'},
+  pic:{c:'#E65100',t:'⚠ Sinais de PIC Elevada (Hipertensão Intracraniana)',items:['Cefaleia intensa e progressiva — piora ao deitar, ao esforço e ao tossir','Vômitos em jato: explosivos, sem náusea prévia — sinal clássico de HIC grave','Rebaixamento progressivo da consciência: agitação → sonolência → estupor → coma','Alteração pupilar: anisocoria (pupila maior = ipsilateral à lesão) = herniação uncal','TRÍADE DE CUSHING: Hipertensão arterial + Bradicardia + Bradipneia = herniação iminente','Papiledema: achado tardio detectado no fundo de olho (↑PIC crônica)','Posturas patológicas: decorticação (flexão MS) ou decerebração (extensão MS + MI) = lesão grave'],alert:'Tríade de Cushing é sinal TARDIO e GRAVE — a intervenção deve ocorrer antes do seu surgimento',red:true},
+  cuidpos:{c:'#4527A0',t:'Cuidados de Enfermagem Pós-Craniotomia',items:['Monitoramento neurológico: Glasgow a cada 1–2h · verificar pupilas (simetria, tamanho, reação à luz)','Controle de PA: PAM 70–100 mmHg · evitar hipotensão (↓perfusão) e hipertensão (↑ressangramento)','Temperatura: monitorar · febre indica infecção ou HIC · intervir com antipiréticos e resfriamento físico','Posicionamento: cabeceira 30–45° para reduzir PIC · alinhamento cervical neutro (evitar flexão do pescoço)','Sítio cirúrgico: avaliar integridade do curativo · sinais de infecção (hiperemia, edema, calor, secreção)','Halo claro ou em anel no curativo = suspeita de vazamento de líquor → notificar equipe imediatamente','Prevenção de TVP: meias elásticas + compressão pneumática intermitente + mobilização precoce dos MMII'],alert:'Qualquer alteração súbita no Glasgow ou anisocoria = sinal de herniação iminente → comunicar IMEDIATAMENTE'},
+  reab:{c:'#1B5E20',t:'Reabilitação e Prevenção Secundária',items:['Iniciar nas primeiras 24–48h de internação — reabilitação precoce','Fisioterapia motora (mobilização + prevenção de contraturas)','Fonoaudiologia (fala e deglutição) · Terapia Ocupacional (AVDs)','ISQ: AAS ± clopidogrel · DOAC se FA (dabigatrana, apixabana, rivaroxabana)','Controle rigoroso de HAS (meta PA < 130/80 mmHg) · Estatinas · HbA1c < 7%'],alert:'90% dos AVCs são atribuíveis a fatores de risco MODIFICÁVEIS — prevenção é o pilar central'}
+};
+
+function show(id){
+  const d=D[id], p=document.getElementById('panel');
+  const border=d.red?'#B71C1C':(d.c||'#1B5E20');
+  p.style.borderLeftColor=border;
+  p.className='panel active';
+  const items=d.items.map(x=>`<div class="panel-item">${x}</div>`).join('');
+  const al=d.alert?`<div class="panel-alert${d.red?' red':''}">${d.alert}</div>`:'';
+  p.innerHTML=`<div class="panel-title" style="color:${d.c||'#1B5E20'}">${d.t}</div><div class="panel-items">${items}</div>${al}`;
+  p.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
